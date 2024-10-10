@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+  </head>
+  <body>
+    <a-scene>
+    
+      <a-assets>
+        <img id="background" src="./img/background.jpg">
+        <a-asset-item id="PBV" src="./glb/PBV.glb"></a-asset-item>
+  
+        <!-- HUD -->
+        <img id="hud" src="./img/01/hud.png"> 
+        
+        <!-- MAIN -->
+        <img id="main01" src="./img/01/main_lg.png">
+        <img id="main02" src="./img/01/main_m.png" alt="">
+  
+        <!-- SIDE -->
+        <img id="rightside01" src="./img/01/side_01.png" alt="">
+        <img id="rightside02" src="./img/01/side_02.png" alt="">
+  
+        <!-- CONTROL -->
+        <img id="control01" src="./img/01/control.png" alt="">
+  
+        <!-- <video id="test" loop="true" src="test.mp4"> </video> -->
+      </a-assets> 
+  
+      <a-entity position="-0.2 -1.45 9.65" rotation="0 35 0">
+        <a-camera>
+          <a-entity cursor="rayOrigin: mouse"></a-entity>
+        </a-camera>
+      </a-entity>
+  
+      <a-entity gltf-model="#PBV" position="1.3 -0.2 8.2" rotation="0 305 0"></a-entity> 
+  
+      <a-sky src="#background"></a-sky>
+  
+      <!-- 정면 메인 디스플레이 화면 -->  
+      <a-plane class="main" color="#323232" position="-1.2 0.3 8.2" height="2px" width="2.5px" rotation="0 35 0" material="opacity: 0.2"></a-plane>
+      
+      <!-- HUD 구역 -->
+      <a-plane class="hud" src='#hud' position="-1.1 0 8.9" height="0.2" width="0.4" rotation="0 35 0" material="opacity: 0.9"></a-plane>
+      
+      <!-- 메인 정면 구역 -->
+      <a-plane class="main01" src='#main01' position="-0.7 0.35 8.9" height="0.5" width="0.8" rotation="0 35 0" material="opacity: 1; transparent: true" visible="false"></a-plane>
+      <a-plane class="main02" src='#main02' position="-0.35 0.35 8.9" height="0.25" width="0.20" rotation="0 35 0" material="opacity: 1; transparent: true" visible="false"></a-plane>
+  
+      <!-- 오른쪽 사이드 디스플레이 화면 -->
+      <a-plane class="rightside01" src='#rightside01' position="0.3 0.35 8" width="1" height="1.3" rotation="0 -60 0" material="opacity: 0.9"></a-plane>
+      <a-plane class="rightside02" src='#rightside02' position="0.3 0.35 8" width="1" height="1.3" rotation="0 -60 0" material="opacity: 0.9" visible="false"></a-plane>
+  
+      <!-- 왼쪽 사이드 디스플레이 화면 --> 
+      <a-plane class="leftside" color="yellow" position="-2 0.3 9.6" width="40px" height="20px" rotation="0 100 0" material="opacity: 0"></a-plane>
+  
+      <!-- 컨트롤 디스플레이 화면 -->
+      <a-plane class="control01" src='#control01' position="-0.88 -0.32 9.1" height="0.2px" width="0.25px" rotation="0 35 0" material="opacity: 1"></a-plane>
+      <!-- <a-videosphere id="sphere" src="#test"></a-videosphere> -->
+    </a-scene>
+
+
+    <!-- <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5"
+    rotation="0 15 0"></a-text> -->
+  
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // 5초 뒤에 main01 나타남
+        setTimeout(function() {
+          
+          var main01 = document.querySelector('.main01');
+          main01.setAttribute('visible', 'true');
+          
+          // main01 5초 동안 화면에 유지
+          setTimeout(function() {
+            
+            // main01이 사라지면서 main02의 위치로 이동
+            main01.setAttribute('animation__opacity', 'property: material.opacity; from: 1; to: 0; dur: 300; easing: easeOutQuart');
+            main01.setAttribute('animation__position', 'property: position; from: -0.7 0.35 8.9; to: -0.35 0.35 8.9; dur: 300; easing: easeOutQuart');
+            main01.setAttribute('animation__scale', 'property: scale; from: 1 1 1; to: 0.5 0.5 0.5; dur: 300; easing: easeOutQuart');
+  
+            // 300ms 후에 main01을 숨기고 main02를 나타나게 함
+            setTimeout(function() {
+              main01.setAttribute('visible', 'false');
+  
+              var main02 = document.querySelector('.main02');
+              main02.setAttribute('visible', 'true');
+              main02.setAttribute('animation', 'property: material.opacity; from: 0; to: 1; dur: 500; easing: easeOutQuart');
+  
+              // // 플레이어 시작 (필요 시)
+              // document.querySelector('#test').play();
+            }, 300); // main01 애니메이션이 끝난 후 실행
+  
+          }, 5000); // main01이 나타난 후 5초 동안 화면에 표시됨
+  
+        }, 5000); // 페이지 로드 후 5초 뒤에 main01이 나타남
+  
+        // rightside01 클릭 시 rightside02 나타나기
+        var rightside01 = document.querySelector('.rightside01');
+        var rightside02 = document.querySelector('.rightside02');
+  
+        rightside01.addEventListener('click', function() {
+          rightside02.setAttribute('visible', 'true');
+          console.log('클릭되었습니다.')
+        });
+      });
+    </script>
+      
+  </body>
+</html>
